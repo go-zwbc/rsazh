@@ -22,42 +22,42 @@ func TestMain(m *testing.M) {
 	m.Run()
 }
 
-func TestLoad公钥(t *testing.T) {
-	r公钥 := mustLoad公钥(t)
+func TestF装载公钥(t *testing.T) {
+	r公钥 := must装载公钥(t)
 	v密文, err := r公钥.M加密([]byte("abc"))
 	require.NoError(t, err)
 	t.Log(base64.StdEncoding.EncodeToString(v密文))
 }
 
-func mustLoad公钥(t *testing.T) *Rsa公钥 {
+func must装载公钥(t *testing.T) *Rsa公钥 {
 	v公钥, err := base64.StdEncoding.DecodeString(case公钥)
 	require.NoError(t, err)
-	r公钥, err := Load公钥(v公钥)
+	r公钥, err := F装载公钥(v公钥)
 	require.NoError(t, err)
 	return r公钥
 }
 
-func TestLoad私钥(t *testing.T) {
-	r私钥 := mustLoad私钥(t)
+func TestF装载私钥(t *testing.T) {
+	r私钥 := must装载私钥(t)
 	v密文, err := r私钥.M签名([]byte("xyz"))
 	require.NoError(t, err)
 	t.Log(base64.StdEncoding.EncodeToString(v密文))
 }
 
-func mustLoad私钥(t *testing.T) *Rsa私钥 {
+func must装载私钥(t *testing.T) *Rsa私钥 {
 	v私钥, err := base64.StdEncoding.DecodeString(case私钥)
 	require.NoError(t, err)
-	r私钥, err := Load私钥(v私钥)
+	r私钥, err := F装载私钥(v私钥)
 	require.NoError(t, err)
 	return r私钥
 }
 
 func TestRsa公钥_M加密(t *testing.T) {
-	r公钥 := mustLoad公钥(t)
+	r公钥 := must装载公钥(t)
 	v密文, err := r公钥.M加密([]byte("abc"))
 	require.NoError(t, err)
 
-	r私钥 := mustLoad私钥(t)
+	r私钥 := must装载私钥(t)
 	v明文, err := r私钥.M解密(v密文)
 	require.NoError(t, err)
 
@@ -65,11 +65,11 @@ func TestRsa公钥_M加密(t *testing.T) {
 }
 
 func TestRsa私钥_M签名(t *testing.T) {
-	r私钥 := mustLoad私钥(t)
+	r私钥 := must装载私钥(t)
 	v密文, err := r私钥.M签名([]byte("xyz"))
 	require.NoError(t, err)
 
-	r公钥 := mustLoad公钥(t)
+	r公钥 := must装载公钥(t)
 	err = r公钥.M验签([]byte("xyz"), v密文)
 	require.NoError(t, err)
 }

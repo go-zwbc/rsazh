@@ -48,3 +48,27 @@ func R获得公钥(privateKeyBytes []byte) ([]byte, error) {
 
 	return pubBytes, nil
 }
+
+func F装载私钥(v私钥 []byte) (*Rsa私钥, error) {
+	prk, err := x509.ParsePKCS8PrivateKey(v私钥)
+	if err != nil {
+		return nil, erero.Wro(err)
+	}
+	pri, ok := prk.(*rsa.PrivateKey)
+	if !ok {
+		return nil, erero.New("转换失败")
+	}
+	return &Rsa私钥{pri: pri}, nil
+}
+
+func F装载公钥(v公钥 []byte) (*Rsa公钥, error) {
+	puk, err := x509.ParsePKIXPublicKey(v公钥)
+	if err != nil {
+		return nil, erero.Wro(err)
+	}
+	pub, ok := puk.(*rsa.PublicKey)
+	if !ok {
+		return nil, erero.New("转换失败")
+	}
+	return &Rsa公钥{pub: pub}, nil
+}
