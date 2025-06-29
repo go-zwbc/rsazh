@@ -83,3 +83,17 @@ func TestRsa私钥_P公钥(t *testing.T) {
 	err = r公钥.M验签([]byte("xyz"), v密文)
 	require.NoError(t, err)
 }
+
+func TestRsa私钥_B导出(t *testing.T) {
+	r私钥 := must装载私钥(t)
+	data, err := r私钥.B导出()
+	require.NoError(t, err)
+	t.Log(base64.StdEncoding.EncodeToString(data))
+}
+
+func TestRsa公钥_B导出(t *testing.T) {
+	r公钥 := must装载公钥(t)
+	data, err := r公钥.B导出()
+	require.NoError(t, err)
+	t.Log(base64.StdEncoding.EncodeToString(data))
+}

@@ -5,6 +5,9 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/sha256"
+	"crypto/x509"
+
+	"github.com/yyle88/erero"
 )
 
 type Rsa私钥 struct {
@@ -23,6 +26,15 @@ func (r *Rsa私钥) M签名(v明文 []byte) ([]byte, error) {
 
 func (r *Rsa私钥) M解密(v密文 []byte) ([]byte, error) {
 	return rsa.DecryptPKCS1v15(rand.Reader, r.pri, v密文)
+}
+
+func (r *Rsa私钥) B导出() ([]byte, error) {
+	// 导出为 PKCS#8 格式（更通用）
+	priBytes, err := x509.MarshalPKCS8PrivateKey(r.pri)
+	if err != nil {
+		return nil, erero.Wro(err)
+	}
+	return priBytes, nil
 }
 
 func (r *Rsa私钥) P公钥() *Rsa公钥 {
@@ -45,4 +57,13 @@ func (r *Rsa公钥) M验签(v明文 []byte, v签名 []byte) error {
 	hash := sha256.New()
 	hash.Write(v明文)
 	return rsa.VerifyPKCS1v15(r.pub, crypto.SHA256, hash.Sum(nil), v签名)
+}
+
+func (r *Rsa公钥) B导出() ([]byte, error) {
+	// 将公钥编码为 PKIX 格式的字节切片
+	pubBytes, err := x509.MarshalPKIXPublicKey(r.pub)
+	if err != nil {
+		return nil, erero.Wro(err)
+	}
+	return pubBytes, nil
 }
