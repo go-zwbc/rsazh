@@ -73,3 +73,13 @@ func TestRsa私钥_M签名(t *testing.T) {
 	err = r公钥.M验签([]byte("xyz"), v密文)
 	require.NoError(t, err)
 }
+
+func TestRsa私钥_P公钥(t *testing.T) {
+	r私钥 := must装载私钥(t)
+	v密文, err := r私钥.M签名([]byte("xyz"))
+	require.NoError(t, err)
+
+	r公钥 := r私钥.P公钥()
+	err = r公钥.M验签([]byte("xyz"), v密文)
+	require.NoError(t, err)
+}

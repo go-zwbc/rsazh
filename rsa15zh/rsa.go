@@ -25,6 +25,10 @@ func (r *Rsa私钥) M解密(v密文 []byte) ([]byte, error) {
 	return rsa.DecryptPKCS1v15(rand.Reader, r.pri, v密文)
 }
 
+func (r *Rsa私钥) P公钥() *Rsa公钥 {
+	return New公钥(&r.pri.PublicKey)
+}
+
 type Rsa公钥 struct {
 	pub *rsa.PublicKey
 }
